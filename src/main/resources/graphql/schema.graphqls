@@ -1,3 +1,39 @@
+scalar Object
 type Query{
     test: String
+    getSubscribersByPage(page: Int!, size:Int!): PaginationOut
 }
+
+
+
+type PaginationOut{
+    content: [SubscriberOut]
+    page: Int
+    size: Int
+    totalElements: Int
+}
+
+type SubscriberOut {
+    subscriberId: Int!
+    username: String!
+    password: String!
+    status: String
+    contactNo: String
+    email: String
+    extId: String
+    createdDate: String
+    updatedTime: String
+    realm: String
+    type: String
+}
+input SubscriberInput {
+    username: String!
+    password: String!
+    status: String
+    contactNo: String
+    email: String
+    extId: String
+    realm: String
+    type: String
+}
+
