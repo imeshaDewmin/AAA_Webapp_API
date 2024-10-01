@@ -1,11 +1,19 @@
 scalar Object
+
 type Query{
     test: String
     getSubscribersByPage(page: Int!, size:Int!): PaginationOut
     getPlans:Object
+    getPlanAttribute (planId: Int!): [PlanAttributeOut]
 }
 
 
+type PlanAttributeOut{
+    id: Int
+    planId: Int
+    attributeName: String
+    attributeValue: String
+}
 
 type PaginationOut{
     content: [SubscriberOut]

@@ -1,6 +1,7 @@
 package com.aaa.service.AAAService.controllers;
 
 import com.aaa.service.AAAService.dtos.PaginationDto;
+import com.aaa.service.AAAService.dtos.PlanAttributeDto;
 import com.aaa.service.AAAService.dtos.PlanDto;
 import com.aaa.service.AAAService.dtos.SubscriberDto;
 import com.aaa.service.AAAService.service.PlanService;
@@ -31,5 +32,10 @@ public class GraphQLController {
     @QueryMapping(name = "getPlans")
     public List<PlanDto> getPlans() {
         return planService.getPlans();
+    }
+
+    @QueryMapping(name = "getPlanAttribute")
+    public List<PlanAttributeDto> getPlanAttribute(@Argument int planId) {
+        return planService.getPlanAttributes(planId);
     }
 }
