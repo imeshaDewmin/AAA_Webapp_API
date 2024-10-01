@@ -1,7 +1,9 @@
 package com.aaa.service.AAAService.controllers;
 
 import com.aaa.service.AAAService.dtos.PaginationDto;
+import com.aaa.service.AAAService.dtos.PlanDto;
 import com.aaa.service.AAAService.dtos.SubscriberDto;
+import com.aaa.service.AAAService.service.PlanService;
 import com.aaa.service.AAAService.service.SubscriberService;
 import lombok.Data;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -14,6 +16,7 @@ import java.util.List;
 @Data
 public class GraphQLController {
     private final SubscriberService subscriberService;
+    private final PlanService planService;
 
     @QueryMapping(name = "test")
     public String test() {
@@ -23,5 +26,10 @@ public class GraphQLController {
     @QueryMapping(name = "getSubscribersByPage")
     public PaginationDto<List<SubscriberDto>> getSubscribersByPage(@Argument int page, @Argument int size) {
         return subscriberService.getSubscribersByPage(page, size);
+    }
+
+    @QueryMapping(name = "getPlans")
+    public List<PlanDto> getPlans() {
+        return planService.getPlans();
     }
 }

@@ -2,6 +2,7 @@ scalar Object
 type Query{
     test: String
     getSubscribersByPage(page: Int!, size:Int!): PaginationOut
+    getPlans:Object
 }
 
 
