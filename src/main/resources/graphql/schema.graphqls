@@ -7,6 +7,9 @@ type Query{
     getPlanAttribute (planId: Int!): [PlanAttributeOut]
 }
 
+type Mutation {
+    createSubscriber(subscriber: SubscriberInput): Object
+}
 
 type PlanAttributeOut{
     id: Int
@@ -36,8 +39,8 @@ type SubscriberOut {
     type: String
 }
 input SubscriberInput {
-    username: String!
-    password: String!
+    username: String
+    password: String
     status: String
     contactNo: String
     email: String

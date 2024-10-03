@@ -7,12 +7,11 @@ import lombok.Getter;
 @Getter
 public enum ResponseCode {
 
-    EMAIL_ALREADY_USED("This email already used"),
-    TOKEN_ALREADY_USED("This token already used"),
-    CLIENT_NOT_FOUND("Client not found"),
-    TOKEN_NOT_FOUND("Token not found"),
-    APP_CONFIG_NOT_FOUND("App config not found"),
-    MASTER_DATA_NOT_FOUND("Master data not found");
+    PLAN_FETCH_FAILED("Plan fetch failed"),
+    PLAN_ATTRIBUTE_FETCH_FAILED("Plan attribute fetch failed"),
+    SUBSCRIBER_CREATE_SUCCESS("Subscriber create success"),
+    SUBSCRIBER_CREATE_FAILED("Subscriber create failed"),
+    USERNAME_OR_EMAIL_ALREADY_EXISTED("This username or email already used");
 
     private String message;
 

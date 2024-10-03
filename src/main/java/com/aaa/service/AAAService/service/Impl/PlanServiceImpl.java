@@ -2,13 +2,15 @@ package com.aaa.service.AAAService.service.Impl;
 
 import com.aaa.service.AAAService.dtos.PlanAttributeDto;
 import com.aaa.service.AAAService.dtos.PlanDto;
+import com.aaa.service.AAAService.exception.GeneralException;
 import com.aaa.service.AAAService.service.PlanService;
+import com.aaa.service.AAAService.utilities.ResponseCode;
 import lombok.Data;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,28 +21,27 @@ public class PlanServiceImpl implements PlanService {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<PlanDto> getPlans() {
+    public Flux<PlanDto> getPlans() {
         try {
             String query = "SELECT * FROM bb_plan";
             NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-            List<PlanDto> plans = namedParameterJdbcTemplate.query(query, (rs, rowNum) ->
+            List<PlanDto> planList = namedParameterJdbcTemplate.query(query, (rs, rowNum) ->
                     PlanDto.builder()
                             .planId(rs.getInt("plan_id"))
                             .typeId(rs.getInt("type_id"))
                             .planName(rs.getString("plan_name"))
                             .description(rs.getString("description"))
                             .build()
-
             );
-            return plans;
+
+            return Flux.fromIterable(planList);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Flux.error(new GeneralException(ResponseCode.PLAN_FETCH_FAILED));
         }
-        return new ArrayList<>();
     }
 
     @Override
-    public List<PlanAttributeDto> getPlanAttributes(int planId) {
+    public Flux<PlanAttributeDto> getPlanAttributes(int planId) {
         try {
             String query = "SELECT * FROM bb_plan_attribute_subscriber_override tbl WHERE tbl.plan_id= :planId";
             Map<String, Object> params = new HashMap<>();
@@ -55,10 +56,9 @@ public class PlanServiceImpl implements PlanService {
                             .attributeValue(rs.getString("attribute_value"))
                             .build()
             );
-            return planAttributeList;
+            return Flux.fromIterable(planAttributeList);
         } catch (Exception e) {
-            e.printStackTrace();
+            return Flux.error(new GeneralException(ResponseCode.PLAN_ATTRIBUTE_FETCH_FAILED));
         }
-        return new ArrayList<>();
     }
 }

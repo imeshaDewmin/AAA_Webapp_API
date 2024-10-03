@@ -2,11 +2,15 @@ package com.aaa.service.AAAService.service.Impl;
 
 import com.aaa.service.AAAService.dtos.PaginationDto;
 import com.aaa.service.AAAService.dtos.SubscriberDto;
+import com.aaa.service.AAAService.exception.GeneralException;
+import com.aaa.service.AAAService.exception.UsernameOrEmailAlreadyExistedException;
 import com.aaa.service.AAAService.service.SubscriberService;
+import com.aaa.service.AAAService.utilities.ResponseCode;
 import lombok.Data;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +54,51 @@ public class SubscriberServiceImpl implements SubscriberService {
                 .content(subscribers)
                 .totalElements(totalElements)
                 .build();
+    }
+
+    @Override
+    public Mono<Map<String, Object>> createSubscriber(SubscriberDto subscriber) {
+        Map<String, Object> result = new HashMap<>();
+        boolean isFound = checkUser(subscriber.getUsername());
+        try {
+            if (!isFound) {
+                String query = "INSERT INTO bb_subscriber (username, password, status, contact_no, email, ext_id, realm, type) " +
+                        "VALUES (:username, :password, :status, :contactNo, :email, :extId, :realm, :type)";
+                Map<String, Object> params = new HashMap<>();
+                params.put("username", subscriber.getUsername());
+                params.put("password", subscriber.getPassword());
+                params.put("status", subscriber.getStatus());
+                params.put("contactNo", subscriber.getContactNo());
+                params.put("email", subscriber.getEmail());
+                params.put("extId", subscriber.getExtId());
+                params.put("realm", subscriber.getRealm());
+                params.put("type", subscriber.getType());
+                NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+                namedParameterJdbcTemplate.update(query, params);
+                result.put("status", ResponseCode.SUBSCRIBER_CREATE_SUCCESS);
+                result.put("responseCode", ResponseCode.SUBSCRIBER_CREATE_SUCCESS.ordinal());
+                return Mono.just(result);
+            } else {
+                return Mono.error(new UsernameOrEmailAlreadyExistedException(ResponseCode.USERNAME_OR_EMAIL_ALREADY_EXISTED));
+            }
+        } catch (Exception e) {
+            return Mono.error(new GeneralException(ResponseCode.SUBSCRIBER_CREATE_FAILED));
+        }
+    }
+
+
+    public boolean checkUser(String username) {
+        try {
+            String query = "SELECT COUNT(*) FROM bb_subscriber WHERE username = :username";
+            Map<String, Object> params = new HashMap<>();
+            params.put("username", username);
+            NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

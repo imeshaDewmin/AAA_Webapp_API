@@ -1,5 +1,7 @@
 package com.aaa.service.AAAService.config;
 
+import com.aaa.service.AAAService.exception.UsernameOrEmailAlreadyExistedException;
+import com.aaa.service.AAAService.utilities.ResponseCode;
 import graphql.GraphQLError;
 import graphql.schema.DataFetchingEnvironment;
 import org.springframework.graphql.execution.DataFetcherExceptionResolverAdapter;
@@ -13,31 +15,17 @@ public class CustomErrorMessageResolver extends DataFetcherExceptionResolverAdap
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
-//        if (ex instanceof TokenNotFound tokenNotFound) {
-//            ResponseCode responseCode = tokenNotFound.getResponseCode();
-//
-//            return buildGraphQLError(
-//                    ErrorType.INTERNAL_ERROR,
-//                    responseCode.getMessage(),
-//                    Map.of(
-//                            "errorCode", responseCode,
-//                            "message", responseCode.getMessage()
-//                    )
-//            );
-//        }
-
-
-//        if (ex instanceof ClientNotFoundException clientNotFound) {
-//            ResponseCode responseCode = clientNotFound.getResponseCode();
-//            return buildGraphQLError(
-//                    ErrorType.INTERNAL_ERROR,
-//                    responseCode.getMessage(),
-//                    Map.of(
-//                            "errorCode", responseCode,
-//                            "message", responseCode.getMessage()
-//                    )
-//            );
-//        }
+        if (ex instanceof UsernameOrEmailAlreadyExistedException usernameOrEmailAlreadyExistedException) {
+            ResponseCode responseCode = usernameOrEmailAlreadyExistedException.getResponseCode();
+            return buildGraphQLError(
+                    ErrorType.BAD_REQUEST,
+                    responseCode.getMessage(),
+                    Map.of(
+                            "errorCode", responseCode,
+                            "message", responseCode.getMessage()
+                    )
+            );
+        }
 
         return buildGraphQLError(
                 ErrorType.INTERNAL_ERROR,
