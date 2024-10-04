@@ -1,10 +1,6 @@
 package com.aaa.service.AAAService.controllers;
 
-import com.aaa.service.AAAService.dtos.PaginationDto;
-import com.aaa.service.AAAService.dtos.PlanAttributeDto;
-import com.aaa.service.AAAService.dtos.PlanDto;
-import com.aaa.service.AAAService.dtos.SubscriberDto;
-import com.aaa.service.AAAService.exception.UsernameOrEmailAlreadyExistedException;
+import com.aaa.service.AAAService.dtos.*;
 import com.aaa.service.AAAService.service.PlanService;
 import com.aaa.service.AAAService.service.SubscriberService;
 import lombok.Data;
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -30,7 +25,7 @@ public class GraphQLController {
     }
 
     @QueryMapping(name = "getSubscribersByPage")
-    public PaginationDto<List<SubscriberDto>> getSubscribersByPage(@Argument int page, @Argument int size) {
+    public Mono<PaginationDto> getSubscribersByPage(@Argument int page, @Argument int size) {
         return subscriberService.getSubscribersByPage(page, size);
     }
 
@@ -44,8 +39,17 @@ public class GraphQLController {
         return planService.getPlanAttributes(planId);
     }
 
+    @QueryMapping(name = "getPlanParameter")
+    public Flux<PlanParameterDto> getPlanParameter(@Argument int planId) {
+        return planService.getPlanParameters(planId);
+    }
     @MutationMapping(name = "createSubscriber")
     public Mono<Map<String, Object>> createSubscriber(@Argument SubscriberDto subscriber){
         return subscriberService.createSubscriber(subscriber);
+    }
+
+    @QueryMapping(name = "getNasWhiteList")
+    public Flux<NASWhitelistDto> getNasWhiteList(@Argument int subscriberId) {
+        return subscriberService.getNasWhitelist(subscriberId);
     }
 }
