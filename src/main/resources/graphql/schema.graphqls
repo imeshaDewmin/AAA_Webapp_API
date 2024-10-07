@@ -66,6 +66,58 @@ type PlanParameterOut{
     parameterOverrideValue: String
 }
 
+input PlanParameterInput{
+    parameterId:Int
+    planId: Int
+    parameterName: String
+    parameterValue: String
+    rejectOnFailure: Int
+    parameterOverrideValue: String
+}
+
+input PlanAttributeInput{
+    id:Int
+    planId: Int
+    attributeName: String
+    attributeValue: String
+    attributeOverrideValue: String
+}
+
+input NasWhitelistInput {
+    id: Int
+    subscriberId: Int
+    nasIdPattern: String
+}
+
+input ProfileOverrideSubscriberAVPsInput{
+    overrideId: Int
+    subscriberId: Int
+    planId: Int
+    overrideKey: String
+    overrideValue: String
+    overrideWhen: String
+}
+
+input DeviceWhitelistInput{
+    id: Int
+    subscriberId: Int
+    MACAddress: String
+    description: String
+    status: String
+    createAt: String
+
+}
+
+input SubscriberAVPInput{
+    id:Int
+    subscriberId: Int
+    attributeGroupId: Int
+    attribute: String
+    operation: String
+    value : String
+    status: String
+}
+
 type NasWhitelistOut {
     id: Int
     subscriberId: Int
@@ -102,5 +154,12 @@ input SubscriberInput {
     extId: String
     realm: String
     type: String
+    nasWhitelist:[NasWhitelistInput]
+    planParameterOverrides: [PlanParameterInput]
+    planAttributeOverrides: [PlanAttributeInput]
+    pofileOverrideSubscriberAVPs: [ProfileOverrideSubscriberAVPsInput]
+    deviceWhitelist: [DeviceWhitelistInput]
+    subscriberAVPs: [SubscriberAVPInput]
+
 }
 

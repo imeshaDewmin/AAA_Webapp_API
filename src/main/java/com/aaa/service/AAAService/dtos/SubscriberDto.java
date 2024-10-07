@@ -3,6 +3,7 @@ package com.aaa.service.AAAService.dtos;
 import lombok.Builder;
 import lombok.Data;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,4 +19,8 @@ public class SubscriberDto{
     private Date updatedTime;
     private String realm;
     private String type;
+    private List<PlanParameterSubscriberOverrideDto> planParameterOverrides;
+    private List<PlanAttributeSubscriberOverrideDto> planAttributeOverrides;
+    private List<ProfileOverrideSubscriberAVPsDto> pofileOverrideSubscriberAVPs;
+    private List<SubscriberAVPsDto> subscriberAVPs;
 }
