@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class NASWhitelistDto {
+public class AttributeGroupDto {
     private int id;
-    private int subscriberId;
-    private String nasIdPattern;
+    private String name;
+    private String description;
 }

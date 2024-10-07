@@ -13,7 +13,9 @@ public enum ResponseCode {
     SUBSCRIBER_CREATE_SUCCESS("Subscriber create success"),
     SUBSCRIBER_CREATE_FAILED("Subscriber create failed"),
     USERNAME_OR_EMAIL_ALREADY_EXISTED("This username or email already used"),
-    PLAN_PARAMETER_FETCH_FAILED("Plan parameter fetch failed");
+    PLAN_PARAMETER_FETCH_FAILED("Plan parameter fetch failed"),
+    ATTRIBUTE_FETCH_FAILED("Attribute group fetch failed"),
+    FETCH_PROFILE_OVERRIDE_AVPS_FETCH_FAILED("Profile override avps fetch failed");
 
     private String message;
 

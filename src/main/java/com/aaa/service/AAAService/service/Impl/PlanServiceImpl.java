@@ -20,12 +20,12 @@ import java.util.Map;
 @Data
 public class PlanServiceImpl implements PlanService {
     private final JdbcTemplate jdbcTemplate;
-
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate = null;
     @Override
     public Flux<PlanDto> getPlans() {
         try {
             String query = "SELECT * FROM bb_plan";
-            NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             List<PlanDto> planList = namedParameterJdbcTemplate.query(query, (rs, rowNum) ->
                     PlanDto.builder()
                             .planId(rs.getInt("plan_id"))
@@ -61,7 +61,7 @@ public class PlanServiceImpl implements PlanService {
                     "        bb_plan_attribute.plan_id = :planId";
             Map<String, Object> params1 = new HashMap<>();
             params1.put("planId", planId);
-            NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             List<PlanAttributeDto> planAttributeList = namedParameterJdbcTemplate.query(queryForAttribute, params1, (rs, rowNum) ->
                     PlanAttributeDto.builder()
                             .id(rs.getInt("id"))
@@ -101,7 +101,7 @@ public class PlanServiceImpl implements PlanService {
                     "        bb_plan_parameter.plan_id = :planId";
             Map<String, Object> params1 = new HashMap<>();
             params1.put("planId", planId);
-            NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             List<PlanParameterDto> planParameterList = namedParameterJdbcTemplate.query(queryForParameter, params1, (rs, rowNum) ->
                     PlanParameterDto.builder()
                             .parameterId(rs.getInt("parameter_id"))

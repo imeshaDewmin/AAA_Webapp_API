@@ -1,8 +1,7 @@
 package com.aaa.service.AAAService.controllers;
 
 import com.aaa.service.AAAService.dtos.*;
-import com.aaa.service.AAAService.service.PlanService;
-import com.aaa.service.AAAService.service.SubscriberService;
+import com.aaa.service.AAAService.service.*;
 import lombok.Data;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -18,6 +17,9 @@ import java.util.Map;
 public class GraphQLController {
     private final SubscriberService subscriberService;
     private final PlanService planService;
+    private final AttributeGroupService attributeGroupService;
+    private final AppService appService;
+    private final ProfileService profileService;
 
     @QueryMapping(name = "test")
     public String test() {
@@ -43,13 +45,34 @@ public class GraphQLController {
     public Flux<PlanParameterDto> getPlanParameter(@Argument int planId) {
         return planService.getPlanParameters(planId);
     }
+
     @MutationMapping(name = "createSubscriber")
-    public Mono<Map<String, Object>> createSubscriber(@Argument SubscriberDto subscriber){
+    public Mono<Map<String, Object>> createSubscriber(@Argument SubscriberDto subscriber) {
         return subscriberService.createSubscriber(subscriber);
     }
 
     @QueryMapping(name = "getNasWhiteList")
-    public Flux<NASWhitelistDto> getNasWhiteList(@Argument int subscriberId) {
+    public Flux<NasWhitelistDto> getNasWhiteList(@Argument int subscriberId) {
         return subscriberService.getNasWhitelist(subscriberId);
+    }
+
+    @QueryMapping(name = "getDeviceWhitelist")
+    public Flux<DeviceWhitelistDto> getDeviceWhitelist(@Argument int subscriberId) {
+        return subscriberService.getDeviceWhitelist(subscriberId);
+    }
+
+    @QueryMapping(name = "getNasAttributeGroup")
+    public Flux<AttributeGroupDto> getNasAttributeGroup() {
+        return attributeGroupService.getNasAttributeGroup();
+    }
+
+    @QueryMapping(name = "getState")
+    public Flux<StateDto> getState() {
+        return appService.getState();
+    }
+
+    @QueryMapping(name = "getProfileOverrideSubscriberAVPs")
+    public Flux<ProfileOverrideSubscriberAVPsDto> getProfileOverrideSubscriberAVPs(@Argument int subscriberId, @Argument int planId) {
+        return profileService.getProfileOverrideSubscriberAVPs(subscriberId, planId);
     }
 }

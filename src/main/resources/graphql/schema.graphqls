@@ -7,10 +7,46 @@ type Query{
     getPlanAttribute (planId: Int!): [PlanAttributeOut]
     getPlanParameter (planId: Int!): [PlanParameterOut]
     getNasWhiteList (subscriberId : Int!) :[NasWhitelistOut]
+    getDeviceWhitelist(subscriberId: Int!):[DeviceWhitelistOut]
+    getNasAttributeGroup:[NasAttributeGroupOut]
+    getState:[StateOut]
+    getProfileOverrideSubscriberAVPs(subscriberId: Int!, planId: Int!):[ProfileOverrideSubscriberAVPs]
 }
 
 type Mutation {
     createSubscriber(subscriber: SubscriberInput): Object
+}
+
+type ProfileOverrideSubscriberAVPs{
+    overrideId: Int
+    subscriberId: Int
+    planId: Int
+    overrideKey: String
+    overrideValue: String
+    overrideWhen: String
+}
+
+type StateOut{
+    state: String
+    description: String
+    isAuthorized: Int
+}
+
+type NasAttributeGroupOut{
+    id: Int
+    name: String
+    description: String
+}
+
+
+type DeviceWhitelistOut{
+    id: Int
+    subscriberId: Int
+    MACAddress: String
+    description: String
+    status: String
+    createAt: String
+
 }
 
 type PlanAttributeOut{

@@ -1,8 +1,6 @@
 package com.aaa.service.AAAService.service.Impl;
 
-import com.aaa.service.AAAService.dtos.NASWhitelistDto;
-import com.aaa.service.AAAService.dtos.PaginationDto;
-import com.aaa.service.AAAService.dtos.SubscriberDto;
+import com.aaa.service.AAAService.dtos.*;
 import com.aaa.service.AAAService.exception.GeneralException;
 import com.aaa.service.AAAService.exception.UsernameOrEmailAlreadyExistedException;
 import com.aaa.service.AAAService.service.SubscriberService;
@@ -106,14 +104,14 @@ public class SubscriberServiceImpl implements SubscriberService {
     }
 
     @Override
-    public Flux<NASWhitelistDto> getNasWhitelist(int subscriberId) {
+    public Flux<NasWhitelistDto> getNasWhitelist(int subscriberId) {
         try {
             namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             Map<String, Object> params = new HashMap<>();
             params.put("subscriberId", subscriberId);
             String query = "SELECT * FROM bb_subscriber_nas_whitelist WHERE subscriber_id= :subscriberId";
-            List<NASWhitelistDto> nasWhitelistList = namedParameterJdbcTemplate.query(query, params, ((rs, rowNum) ->
-                    NASWhitelistDto.builder()
+            List<NasWhitelistDto> nasWhitelistList = namedParameterJdbcTemplate.query(query, params, ((rs, rowNum) ->
+                    NasWhitelistDto.builder()
                             .id(rs.getInt("id"))
                             .subscriberId(rs.getInt("subscriber_id"))
                             .nasIdPattern(rs.getString("nas_id_pattern"))
@@ -125,6 +123,30 @@ public class SubscriberServiceImpl implements SubscriberService {
             return Flux.error(new GeneralException(ResponseCode.ERROR));
         }
 
+    }
+
+    @Override
+    public Flux<DeviceWhitelistDto> getDeviceWhitelist(int subscriberId) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            Map<String, Object> params = new HashMap<>();
+            params.put("subscriberId", subscriberId);
+            String query = "SELECT * FROM bb_subscriber_device_whitelist WHERE subscriber_id= :subscriberId";
+            List<DeviceWhitelistDto> deviceNasWhitelist = namedParameterJdbcTemplate.query(query, params, ((rs, rowNum) ->
+                    DeviceWhitelistDto.builder()
+                            .id(rs.getInt("id"))
+                            .subscriberId(rs.getInt("subscriber_id"))
+                            .MACAddress(rs.getString("device_mac"))
+                            .description(rs.getString("device_description"))
+                            .status(rs.getString("status"))
+                            .createAt(rs.getString("created_date"))
+                            .build()
+            ));
+            return Flux.fromIterable(deviceNasWhitelist);
+
+        } catch (Exception e) {
+            return Flux.error(new GeneralException(ResponseCode.ERROR));
+        }
     }
 
 
