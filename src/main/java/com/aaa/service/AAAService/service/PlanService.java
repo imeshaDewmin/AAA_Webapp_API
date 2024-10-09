@@ -7,8 +7,8 @@ import reactor.core.publisher.Flux;
 
 public interface PlanService {
     Flux<PlanDto> getPlans();
-    Flux<PlanAttributeDto> getPlanAttributes(int planId);
-    Flux<PlanParameterDto> getPlanParameters(int planId);
+    Flux<PlanAttributeDto> getPlanAttributes(int subscriberId, int planId);
+    Flux<PlanParameterDto> getPlanParameters(int subscriberId, int planId);
 
 
 }

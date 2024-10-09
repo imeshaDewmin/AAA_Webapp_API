@@ -12,4 +12,5 @@ public class PlanAttributeSubscriberOverrideDto {
     private int planId;
     private String attributeName;
     private String attributeValue;
+    private String attributeOverrideValue;
 }

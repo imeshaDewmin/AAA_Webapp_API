@@ -6,10 +6,9 @@ import lombok.Data;
 @Data
 @Builder
 public class PlanParameterDto {
-    private int parameterId;
+    private int overrideId;
     private int planId;
     private String parameterName;
     private String parameterValue;
-    private int rejectOnFailure;
     private String parameterOverrideValue;
 }

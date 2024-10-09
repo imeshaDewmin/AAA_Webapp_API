@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class PlanAttributeDto {
-    private int id;
+    private int overrideId;
     private int planId;
     private String attributeName;
     private String attributeValue;

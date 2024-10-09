@@ -37,18 +37,28 @@ public class GraphQLController {
     }
 
     @QueryMapping(name = "getPlanAttribute")
-    public Flux<PlanAttributeDto> getPlanAttribute(@Argument int planId) {
-        return planService.getPlanAttributes(planId);
+    public Flux<PlanAttributeDto> getPlanAttribute(@Argument int subscriberId, @Argument int planId) {
+        return planService.getPlanAttributes(subscriberId, planId);
     }
 
     @QueryMapping(name = "getPlanParameter")
-    public Flux<PlanParameterDto> getPlanParameter(@Argument int planId) {
-        return planService.getPlanParameters(planId);
+    public Flux<PlanParameterDto> getPlanParameter(@Argument int subscriberId, @Argument int planId) {
+        return planService.getPlanParameters(subscriberId, planId);
+    }
+
+    @MutationMapping(name = "updateSubscriberParameters")
+    public Mono<Map<String, Object>> updateSubscriberParameters(@Argument int subscriberId, @Argument int planId, @Argument SubscriberDto subscriber) {
+        return subscriberService.updateSubscriberParameters(subscriberId, planId, subscriber);
     }
 
     @MutationMapping(name = "createSubscriber")
     public Mono<Map<String, Object>> createSubscriber(@Argument SubscriberDto subscriber) {
         return subscriberService.createSubscriber(subscriber);
+    }
+
+    @MutationMapping(name = "applyPlan")
+    public Mono<Map<String, Object>> applyPlan(@Argument int subscriberId, @Argument int planId, @Argument String state) {
+        return subscriberService.applyPlan(subscriberId, planId, state);
     }
 
     @QueryMapping(name = "getNasWhiteList")
@@ -59,6 +69,11 @@ public class GraphQLController {
     @QueryMapping(name = "getDeviceWhitelist")
     public Flux<DeviceWhitelistDto> getDeviceWhitelist(@Argument int subscriberId) {
         return subscriberService.getDeviceWhitelist(subscriberId);
+    }
+
+    @QueryMapping(name = "getSubscriberAVPs")
+    public Flux<SubscriberAVPsDto> getSubscriberAVPs(@Argument int subscriberId) {
+        return subscriberService.getSubscriberAVPs(subscriberId);
     }
 
     @QueryMapping(name = "getNasAttributeGroup")

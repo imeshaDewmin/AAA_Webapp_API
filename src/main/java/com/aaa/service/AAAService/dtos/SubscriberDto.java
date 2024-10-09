@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public class SubscriberDto{
     private int subscriberId;
+    private int planId;
     private String username;
     private String password;
     private String status;
@@ -23,4 +24,5 @@ public class SubscriberDto{
     private List<PlanAttributeSubscriberOverrideDto> planAttributeOverrides;
     private List<ProfileOverrideSubscriberAVPsDto> pofileOverrideSubscriberAVPs;
     private List<SubscriberAVPsDto> subscriberAVPs;
+    private List<DeviceWhitelistDto> deviceWhitelist;
 }

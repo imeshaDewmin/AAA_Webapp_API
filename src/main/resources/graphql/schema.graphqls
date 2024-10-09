@@ -4,18 +4,32 @@ type Query{
     test: String
     getSubscribersByPage(page: Int!, size:Int!): PaginationOut
     getPlans:Object
-    getPlanAttribute (planId: Int!): [PlanAttributeOut]
-    getPlanParameter (planId: Int!): [PlanParameterOut]
+    getPlanAttribute (subscriberId: Int!, planId: Int!): [PlanAttributeOut]
+    getPlanParameter (subscriberId: Int!, planId: Int!): [PlanParameterOut]
     getNasWhiteList (subscriberId : Int!) :[NasWhitelistOut]
     getDeviceWhitelist(subscriberId: Int!):[DeviceWhitelistOut]
     getNasAttributeGroup:[NasAttributeGroupOut]
+    getSubscriberAVPs(subscriberId: Int!):[SubscriberAVPsOut]
     getState:[StateOut]
     getProfileOverrideSubscriberAVPs(subscriberId: Int!, planId: Int!):[ProfileOverrideSubscriberAVPs]
 }
 
 type Mutation {
     createSubscriber(subscriber: SubscriberInput): Object
+    applyPlan(subscriberId: Int!, planId: Int!, state: String!): Object
+    updateSubscriberParameters(subscriberId: Int, planId: Int, subscriber: SubscriberInput): Object
 }
+
+type SubscriberAVPsOut{
+    id:Int
+    subscriberId: Int
+    attributeGroupId: Int
+    attribute: String
+    operation: String
+    value : String
+    status: String
+}
+
 
 type ProfileOverrideSubscriberAVPs{
     overrideId: Int
@@ -50,7 +64,7 @@ type DeviceWhitelistOut{
 }
 
 type PlanAttributeOut{
-    id: Int
+    overrideId: Int
     planId: Int
     attributeName: String
     attributeValue: String
@@ -58,25 +72,23 @@ type PlanAttributeOut{
 }
 
 type PlanParameterOut{
-    parameterId: Int
+    overrideId: Int
     planId: Int
     parameterName: String
     parameterValue: String
-    rejectOnFailure: Int
     parameterOverrideValue: String
 }
 
 input PlanParameterInput{
-    parameterId:Int
+    overrideId:Int
     planId: Int
     parameterName: String
     parameterValue: String
-    rejectOnFailure: Int
     parameterOverrideValue: String
 }
 
 input PlanAttributeInput{
-    id:Int
+    overrideId:Int
     planId: Int
     attributeName: String
     attributeValue: String
@@ -146,6 +158,7 @@ type SubscriberOut {
     type: String
 }
 input SubscriberInput {
+    planId: Int
     username: String
     password: String
     status: String

@@ -11,5 +11,6 @@ public class PlanParameterSubscriberOverrideDto {
     private int subscriberId;
     private String parameterName;
     private String parameterValue;
+    private String parameterOverrideValue;
 
 }
