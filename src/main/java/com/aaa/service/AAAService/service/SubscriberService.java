@@ -17,7 +17,7 @@ public interface SubscriberService {
 
     Flux<DeviceWhitelistDto> getDeviceWhitelist(int subscriberId);
     Flux<SubscriberAVPsDto> getSubscriberAVPs(int subscriberId);
-
+    Mono<SubscriberDto> getSubscriberById(int subscriberId);
     Mono<Map<String, Object>> applyPlan(int subscriberId, int planId, String state);
 
 }

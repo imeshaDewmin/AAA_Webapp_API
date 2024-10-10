@@ -34,7 +34,25 @@ public class SubscriberServiceImpl implements SubscriberService {
     public Mono<PaginationDto> getSubscribersByPage(int page, int size) {
         try {
             namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
-            String query = "SELECT * FROM bb_subscriber LIMIT :size OFFSET :offset";
+            String query = "SELECT \n" +
+                    "    s.subscriber_id,\n" +
+                    "    s.username,\n" +
+                    "    s.password,\n" +
+                    "    s.status,\n" +
+                    "    s.contact_no,\n" +
+                    "    s.email,\n" +
+                    "    s.ext_id,\n" +
+                    "    s.created_date,\n" +
+                    "    s.updated_time,\n" +
+                    "    s.realm,\n" +
+                    "    s.type,\n" +
+                    "    sp.plan_id\n" +
+                    "FROM \n" +
+                    "    bb_subscriber s\n" +
+                    "INNER JOIN \n" +
+                    "    bb_subscriber_plan sp ON s.subscriber_id = sp.subscriber_id\n" +
+                    "LIMIT :size OFFSET :offset;";
+            ;
             String countQuery = "SELECT COUNT(*) FROM bb_subscriber";
             int offset = (page - 1) * size;
             Map<String, Object> params = new HashMap<>();
@@ -55,6 +73,7 @@ public class SubscriberServiceImpl implements SubscriberService {
                             .updatedTime(rs.getDate("updated_time"))
                             .realm(rs.getString("realm"))
                             .type(rs.getString("type"))
+                            .planId(rs.getInt("plan_id"))
                             .build()
             );
 
@@ -333,6 +352,55 @@ public class SubscriberServiceImpl implements SubscriberService {
             return Flux.error(new GeneralException(ResponseCode.ERROR));
         }
     }
+
+    @Override
+    public Mono<SubscriberDto> getSubscriberById(int subscriberId) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            Map<String, Object> params = new HashMap<>();
+            params.put("subscriberId", subscriberId);
+
+            String query = "SELECT\n" +
+                    "    s.subscriber_id,\n" +
+                    "    s.username,\n" +
+                    "    s.password,\n" +
+                    "    s.status,\n" +
+                    "    s.contact_no,\n" +
+                    "    s.email,\n" +
+                    "    s.ext_id,\n" +
+                    "    s.created_date,\n" +
+                    "    s.updated_time,\n" +
+                    "    s.realm,\n" +
+                    "    s.type,\n" +
+                    "    sp.plan_id\n" +
+                    "FROM\n" +
+                    "    bb_subscriber s\n" +
+                    "    INNER JOIN bb_subscriber_plan sp ON s.subscriber_id = sp.subscriber_id " +
+                    "WHERE s.subscriber_id = :subscriberId"; // Fixed query syntax
+
+            List<SubscriberDto> subscribers = namedParameterJdbcTemplate.query(query, params, (rs, rowNum) ->
+                    SubscriberDto.builder()
+                            .subscriberId(rs.getInt("subscriber_id"))
+                            .username(rs.getString("username"))
+                            .password(rs.getString("password"))
+                            .status(rs.getString("status"))
+                            .contactNo(rs.getString("contact_no"))
+                            .email(rs.getString("email"))
+                            .extId(rs.getString("ext_id"))
+                            .createdDate(rs.getDate("created_date"))
+                            .updatedTime(rs.getDate("updated_time"))
+                            .realm(rs.getString("realm"))
+                            .type(rs.getString("type"))
+                            .planId(rs.getInt("plan_id"))
+                            .build()
+            );
+
+            return subscribers.isEmpty() ? Mono.empty() : Mono.just(subscribers.get(0));
+        } catch (Exception e) {
+            return Mono.error(new GeneralException(ResponseCode.ERROR));
+        }
+    }
+
 
     @Override
     public Mono<Map<String, Object>> applyPlan(int subscriberId, int planId, String state) {

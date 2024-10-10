@@ -12,6 +12,7 @@ type Query{
     getSubscriberAVPs(subscriberId: Int!):[SubscriberAVPsOut]
     getState:[StateOut]
     getProfileOverrideSubscriberAVPs(subscriberId: Int!, planId: Int!):[ProfileOverrideSubscriberAVPs]
+    getSubscriberById(subscriberId: Int):SubscriberOut
 }
 
 type Mutation {
@@ -146,6 +147,7 @@ type PaginationOut{
 
 type SubscriberOut {
     subscriberId: Int!
+    planId:Int
     username: String!
     password: String!
     status: String

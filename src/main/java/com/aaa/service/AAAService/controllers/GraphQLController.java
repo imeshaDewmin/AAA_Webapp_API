@@ -31,6 +31,11 @@ public class GraphQLController {
         return subscriberService.getSubscribersByPage(page, size);
     }
 
+    @QueryMapping(name = "getSubscriberById")
+    public Mono<SubscriberDto> getSubscriberById(@Argument int subscriberId) {
+        return subscriberService.getSubscriberById(subscriberId);
+    }
+
     @QueryMapping(name = "getPlans")
     public Flux<PlanDto> getPlans() {
         return planService.getPlans();
