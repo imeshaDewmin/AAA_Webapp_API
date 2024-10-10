@@ -61,6 +61,11 @@ public class GraphQLController {
         return subscriberService.createSubscriber(subscriber);
     }
 
+    @MutationMapping(name = "updateSubscriber")
+    public Mono<Map<String, Object>> updateSubscriber(@Argument int subscriberId, @Argument SubscriberDto subscriber) {
+        return subscriberService.updateSubscriber(subscriberId, subscriber);
+    }
+
     @MutationMapping(name = "applyPlan")
     public Mono<Map<String, Object>> applyPlan(@Argument int subscriberId, @Argument int planId, @Argument String state) {
         return subscriberService.applyPlan(subscriberId, planId, state);

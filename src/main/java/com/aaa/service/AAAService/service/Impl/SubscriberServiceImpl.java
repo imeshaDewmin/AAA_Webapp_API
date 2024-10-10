@@ -155,6 +155,8 @@ public class SubscriberServiceImpl implements SubscriberService {
                     planParameters.put("parameterName", override.getParameterName());
                     if (override.getParameterOverrideValue() != null) {
                         planParameters.put("parameterValue", override.getParameterOverrideValue());
+                    } else {
+                        planParameters.put("parameterValue", "");
                     }
                     KeyHolder keyHolder = new GeneratedKeyHolder();
                     namedParameterJdbcTemplate.update(query, new MapSqlParameterSource(planParameters), keyHolder, new String[]{"id"});
@@ -182,6 +184,8 @@ public class SubscriberServiceImpl implements SubscriberService {
                     planAttribute.put("attributeName", attribute.getAttributeName());
                     if (attribute.getAttributeOverrideValue() != null) {
                         planAttribute.put("attributeValue", attribute.getAttributeOverrideValue());
+                    } else {
+                        planAttribute.put("attributeValue", "");
                     }
 
                     KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -434,6 +438,65 @@ public class SubscriberServiceImpl implements SubscriberService {
 
         } catch (Exception e) {
             return Mono.error(new GeneralException(ResponseCode.ERROR));
+        }
+    }
+
+    @Override
+    public Mono<Map<String, Object>> updateSubscriber(int subscriberId, SubscriberDto subscriber) {
+        Map<String, Object> result = new HashMap<>();
+        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+        try {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE bb_subscriber SET ");
+            Map<String, Object> params = new HashMap<>();
+            if (subscriber.getUsername() != null) {
+                queryBuilder.append("username = :username, ");
+                params.put("username", subscriber.getUsername());
+            }
+            if (subscriber.getPassword() != null) {
+                queryBuilder.append("password = :password, ");
+                params.put("password", subscriber.getPassword());
+            }
+            if (subscriber.getStatus() != null) {
+                queryBuilder.append("status = :status, ");
+                params.put("status", subscriber.getStatus());
+            }
+            if (subscriber.getContactNo() != null) {
+                queryBuilder.append("contact_no = :contactNo, ");
+                params.put("contactNo", subscriber.getContactNo());
+            }
+            if (subscriber.getEmail() != null) {
+                queryBuilder.append("email = :email, ");
+                params.put("email", subscriber.getEmail());
+            }
+            if (subscriber.getExtId() != null) {
+                queryBuilder.append("ext_id = :extId, ");
+                params.put("extId", subscriber.getExtId());
+            }
+            if (subscriber.getRealm() != null) {
+                queryBuilder.append("realm = :realm, ");
+                params.put("realm", subscriber.getRealm());
+            }
+            if (subscriber.getType() != null) {
+                queryBuilder.append("type = :type, ");
+                params.put("type", subscriber.getType());
+            }
+            queryBuilder.setLength(queryBuilder.length() - 2);
+            queryBuilder.append(" WHERE subscriber_id = :subscriberId");
+            params.put("subscriberId", subscriberId);
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            namedParameterJdbcTemplate.update(queryBuilder.toString(), new MapSqlParameterSource(params), keyHolder, new String[]{"id"});
+
+            Number generatedId = keyHolder.getKey();
+            if (generatedId != null) {
+                result.put("subscriberId", generatedId.longValue());
+            }
+            result.put("status", ResponseCode.SUBSCRIBER_UPDATE_SUCCESS);
+            result.put("responseCode", ResponseCode.SUBSCRIBER_UPDATE_SUCCESS.ordinal());
+
+            return Mono.just(result);
+        } catch (Exception e) {
+            return Mono.error(new GeneralException(ResponseCode.SUBSCRIBER_UPDATE_FAILED));
         }
     }
 

@@ -17,6 +17,7 @@ type Query{
 
 type Mutation {
     createSubscriber(subscriber: SubscriberInput): Object
+    updateSubscriber(subscriberId: Int!, subscriber: SubscriberInput): Object
     applyPlan(subscriberId: Int!, planId: Int!, state: String!): Object
     updateSubscriberParameters(subscriberId: Int, planId: Int, subscriber: SubscriberInput): Object
 }
