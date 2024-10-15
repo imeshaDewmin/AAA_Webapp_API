@@ -2,6 +2,7 @@ package com.aaa.service.AAAService.dtos;
 
 import lombok.Builder;
 import lombok.Data;
+
 import java.util.Date;
 import java.util.List;
 
@@ -25,4 +26,7 @@ public class SubscriberDto{
     private List<ProfileOverrideSubscriberAVPsDto> pofileOverrideSubscriberAVPs;
     private List<SubscriberAVPsDto> subscriberAVPs;
     private List<DeviceWhitelistDto> deviceWhitelist;
+    private List<NasWhitelistDto> nasWhitelist;
+    private List<SubscriberAttributeDto> subscriberAttributes;
+    private List<SubscriberParameterDto> subscriberParameters;
 }

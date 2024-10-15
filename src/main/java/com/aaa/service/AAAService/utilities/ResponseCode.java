@@ -18,8 +18,10 @@ public enum ResponseCode {
     PLAN_PARAMETER_FETCH_FAILED("Plan parameter fetch failed"),
     ATTRIBUTE_FETCH_FAILED("Attribute group fetch failed"),
     FETCH_PROFILE_OVERRIDE_AVPS_FETCH_FAILED("Profile override avps fetch failed"),
-    UPDATE_PARAMETERS("Update subscriber parameters success");
-
+    UPDATE_PARAMETERS("Update subscriber parameters success"),
+    ATTRIBUTE_META_FETCH_FAILED("Attribute fetch failed"),
+    PARAMETER_META_FETCH_FAILED("Parameter fetch failed"),
+    PROFILE_META_FETCH_FAILED("Profile fetch failed");
     private String message;
 
     public void setMessage(String message) {

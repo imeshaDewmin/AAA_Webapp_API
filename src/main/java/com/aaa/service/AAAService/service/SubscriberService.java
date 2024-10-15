@@ -20,6 +20,11 @@ public interface SubscriberService {
     Mono<SubscriberDto> getSubscriberById(int subscriberId);
     Mono<Map<String, Object>> applyPlan(int subscriberId, int planId, String state);
 
+    void resetAllPlanParameterWhenPlanApply(int subscriberId);
+
     Mono<Map<String, Object>> updateSubscriber(int subscriberId, SubscriberDto subscriber);
+    Flux<SubscriberAttributeDto> getSubscriberAttribute(int subscriberId);
+    Flux<SubscriberParameterDto> getSubscriberParameter(int subscriberId);
+
 
 }

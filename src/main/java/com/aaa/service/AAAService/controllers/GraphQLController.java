@@ -100,4 +100,29 @@ public class GraphQLController {
     public Flux<ProfileOverrideSubscriberAVPsDto> getProfileOverrideSubscriberAVPs(@Argument int subscriberId, @Argument int planId) {
         return profileService.getProfileOverrideSubscriberAVPs(subscriberId, planId);
     }
+
+    @QueryMapping(name = "getAttributeMeta")
+    public Flux<SubscriberAttributeMetaDto> getAttributeMeta() {
+        return appService.getAttributes();
+    }
+
+    @QueryMapping(name = "getParameterMeta")
+    public Flux<SubscriberParameterMetaDto> getParameterMeta() {
+        return appService.getParameters();
+    }
+
+    @QueryMapping(name = "getSubscriberAttribute")
+    public Flux<SubscriberAttributeDto> getSubscriberAttribute(@Argument int subscriberId) {
+        return subscriberService.getSubscriberAttribute(subscriberId);
+    }
+
+    @QueryMapping(name = "getSubscriberParameter")
+    public Flux<SubscriberParameterDto> getSubscriberParameter(@Argument int subscriberId) {
+        return subscriberService.getSubscriberParameter(subscriberId);
+    }
+
+    @QueryMapping(name = "getProfileMeta")
+    public Flux<ProfileOverrideMetaDto> getProfileMeta() {
+        return appService.getProfiles();
+    }
 }
