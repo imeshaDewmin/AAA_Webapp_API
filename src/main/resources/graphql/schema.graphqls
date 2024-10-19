@@ -1,3 +1,235 @@
+scalar Object
+
 type Query{
     test: String
+    getSubscribersByPage(page: Int!, size:Int!): PaginationOut
+    getPlans:Object
+    getPlanAttribute (subscriberId: Int!, planId: Int!): [PlanAttributeOut]
+    getPlanParameter (subscriberId: Int!, planId: Int!): [PlanParameterOut]
+    getNasWhiteList (subscriberId : Int!) :[NasWhitelistOut]
+    getDeviceWhitelist(subscriberId: Int!):[DeviceWhitelistOut]
+    getNasAttributeGroup:[NasAttributeGroupOut]
+    getSubscriberAVPs(subscriberId: Int!):[SubscriberAVPsOut]
+    getState:[StateOut]
+    getProfileOverrideSubscriberAVPs(subscriberId: Int!, planId: Int!):[ProfileOverrideSubscriberAVPs]
+    getSubscriberById(subscriberId: Int):SubscriberOut
+    getAttributeMeta:[AttributeMetaOut]
+    getSubscriberAttribute(subscriberId: Int):[SubscriberAttributeOut]
+    getParameterMeta:[ParameterMetaOut]
+    getProfileMeta:[ProfileMetaOut]
+    getSubscriberParameter(subscriberId: Int):[SubscriberParameterOut]
+
 }
+
+type Mutation {
+    createSubscriber(subscriber: SubscriberInput): Object
+    updateSubscriber(subscriberId: Int!, subscriber: SubscriberInput): Object
+    applyPlan(subscriberId: Int!, planId: Int!, state: String!): Object
+    updateSubscriberParameters(subscriberId: Int, planId: Int, subscriber: SubscriberInput): Object
+}
+
+type ProfileMetaOut{
+    id: Int
+    profile: String
+}
+
+type SubscriberAVPsOut{
+    id:Int
+    subscriberId: Int
+    attributeGroupId: Int
+    attribute: String
+    operation: String
+    value : String
+    status: String
+}
+
+
+type ProfileOverrideSubscriberAVPs{
+    overrideId: Int
+    subscriberId: Int
+    planId: Int
+    overrideKey: String
+    overrideValue: String
+    overrideWhen: String
+}
+
+type StateOut{
+    state: String
+    description: String
+    isAuthorized: Int
+}
+
+type NasAttributeGroupOut{
+    id: Int
+    name: String
+    description: String
+}
+
+
+type DeviceWhitelistOut{
+    id: Int
+    subscriberId: Int
+    MACAddress: String
+    description: String
+    status: String
+    createAt: String
+
+}
+
+type PlanAttributeOut{
+    overrideId: Int
+    planId: Int
+    attributeName: String
+    attributeValue: String
+    attributeOverrideValue: String
+}
+
+type PlanParameterOut{
+    overrideId: Int
+    planId: Int
+    parameterName: String
+    parameterValue: String
+    parameterOverrideValue: String
+}
+
+input PlanParameterInput{
+    overrideId:Int
+    planId: Int
+    parameterName: String
+    parameterValue: String
+    parameterOverrideValue: String
+}
+
+input PlanAttributeInput{
+    overrideId:Int
+    planId: Int
+    attributeName: String
+    attributeValue: String
+    attributeOverrideValue: String
+}
+
+input NasWhitelistInput {
+    id: Int
+    subscriberId: Int
+    nasIdPattern: String
+}
+
+
+input ProfileOverrideSubscriberAVPsInput{
+    overrideId: Int
+    subscriberId: Int
+    planId: Int
+    overrideKey: String
+    overrideValue: String
+    overrideWhen: String
+}
+
+input DeviceWhitelistInput{
+    id: Int
+    subscriberId: Int
+    MACAddress: String
+    description: String
+    status: String
+    createAt: String
+
+}
+
+input SubscriberAVPInput{
+    id:Int
+    subscriberId: Int
+    attributeGroupId: Int
+    attribute: String
+    operation: String
+    value : String
+    status: String
+}
+
+type NasWhitelistOut {
+    id: Int
+    subscriberId: Int
+    nasIdPattern: String
+}
+
+
+type PaginationOut{
+    content: [SubscriberOut]
+    page: Int
+    size: Int
+    totalElements: Int
+}
+
+type SubscriberOut {
+    subscriberId: Int!
+    planId:Int
+    username: String!
+    password: String!
+    status: String
+    contactNo: String
+    email: String
+    extId: String
+    createdDate: String
+    updatedTime: String
+    realm: String
+    type: String
+}
+input SubscriberInput {
+    planId: Int
+    username: String
+    password: String
+    status: String
+    contactNo: String
+    email: String
+    extId: String
+    realm: String
+    type: String
+    nasWhitelist:[NasWhitelistInput]
+    planParameterOverrides: [PlanParameterInput]
+    planAttributeOverrides: [PlanAttributeInput]
+    pofileOverrideSubscriberAVPs: [ProfileOverrideSubscriberAVPsInput]
+    deviceWhitelist: [DeviceWhitelistInput]
+    subscriberAVPs: [SubscriberAVPInput]
+    subscriberAttributes: [SubscriberAttributeInput]
+    subscriberParameters: [SubscriberParameterInput]
+
+}
+
+type AttributeMetaOut{
+    id: String
+    attribute: String
+}
+
+type ParameterMetaOut{
+    id: String
+    parameter: String
+}
+
+type SubscriberAttributeOut{
+    id: Int
+    subscriberId: Int
+    attributeName: String
+    attributeValue: String
+}
+
+type SubscriberParameterOut{
+    id: Int
+    subscriberId: Int
+    parameterName: String
+    parameterValue: String
+    rejectOnFailure: Int
+}
+
+input SubscriberAttributeInput{
+    id: Int
+    subscriberId: Int
+    attributeName: String
+    attributeValue: String
+}
+
+input SubscriberParameterInput{
+    id: Int
+    subscriberId: Int
+    parameterName: String
+    parameterValue: String
+    rejectOnFailure: Int
+}
+
