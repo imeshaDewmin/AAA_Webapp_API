@@ -12,6 +12,7 @@ public interface SubscriberService {
 
     Mono<Map<String, Object>> createSubscriber(SubscriberDto subscriber);
     Mono<Map<String, Object>> updateSubscriberParameters(int subscriberId, int planId, SubscriberDto subscriber);
+    Mono<Map<String, Object>> deleteSubscriber(int subscriberId);
 
     Flux<NasWhitelistDto> getNasWhitelist(int subscriberId);
 

@@ -3,7 +3,9 @@ scalar Object
 type Query{
     test: String
     getSubscribersByPage(page: Int!, size:Int!): PaginationOut
+    getPlansByPage(page: Int!, size:Int!): PaginationPlanOut
     getPlans:Object
+    getPlansById(planId: Int):PlanOut
     getPlanAttribute (subscriberId: Int!, planId: Int!): [PlanAttributeOut]
     getPlanParameter (subscriberId: Int!, planId: Int!): [PlanParameterOut]
     getNasWhiteList (subscriberId : Int!) :[NasWhitelistOut]
@@ -24,8 +26,12 @@ type Query{
 type Mutation {
     createSubscriber(subscriber: SubscriberInput): Object
     updateSubscriber(subscriberId: Int!, subscriber: SubscriberInput): Object
+    deleteSubscriber(subscriberId: Int!): Object
     applyPlan(subscriberId: Int!, planId: Int!, state: String!): Object
     updateSubscriberParameters(subscriberId: Int, planId: Int, subscriber: SubscriberInput): Object
+    createPlan(plan: PlanInput!): Object
+    updatePlan(planId: Int!, plan: PlanInput!): Object
+    deletePlan(planId: Int!): Object
 }
 
 type ProfileMetaOut{
@@ -74,6 +80,13 @@ type DeviceWhitelistOut{
     status: String
     createAt: String
 
+}
+
+type PlanOut{
+    planId: Int
+    typeId: Int
+    planName: String
+    description: String
 }
 
 type PlanAttributeOut{
@@ -158,6 +171,14 @@ type PaginationOut{
     totalElements: Int
 }
 
+
+type PaginationPlanOut{
+    content: [PlanOut]
+    page: Int
+    size: Int
+    totalElements: Int
+}
+
 type SubscriberOut {
     subscriberId: Int!
     planId:Int
@@ -191,6 +212,12 @@ input SubscriberInput {
     subscriberAttributes: [SubscriberAttributeInput]
     subscriberParameters: [SubscriberParameterInput]
 
+}
+
+input PlanInput {
+    typeId: Int
+    planName: String
+    description: String
 }
 
 type AttributeMetaOut{

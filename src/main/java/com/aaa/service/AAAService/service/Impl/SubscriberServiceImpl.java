@@ -2,6 +2,7 @@ package com.aaa.service.AAAService.service.Impl;
 
 import com.aaa.service.AAAService.dtos.*;
 import com.aaa.service.AAAService.exception.GeneralException;
+import com.aaa.service.AAAService.exception.SubscriberNotFoundException;
 import com.aaa.service.AAAService.exception.UsernameOrEmailAlreadyExistedException;
 import com.aaa.service.AAAService.service.SubscriberService;
 import com.aaa.service.AAAService.utilities.CustomValidator;
@@ -125,6 +126,41 @@ public class SubscriberServiceImpl implements SubscriberService {
             return Mono.error(new GeneralException(ResponseCode.SUBSCRIBER_CREATE_FAILED));
         }
     }
+
+
+    @Override
+    public Mono<Map<String, Object>> deleteSubscriber(int subscriberId) {
+        Map<String, Object> result = new HashMap<>();
+        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+        try {
+            // Validate if subscriber exists by ID
+            boolean isFound = customValidator.deleteSubscriber(subscriberId); // Assuming a method to validate by ID
+
+            if (isFound) {
+                // Use correct column name, e.g., 'subscriber_id' if 'id' doesn't exist
+                String query = "DELETE FROM bb_subscriber WHERE subscriber_id = :subscriberId"; // Update here
+                Map<String, Object> params = new HashMap<>();
+                params.put("subscriberId", subscriberId);
+
+                int rowsAffected = namedParameterJdbcTemplate.update(query, new MapSqlParameterSource(params));
+
+                if (rowsAffected > 0) {
+                    result.put("status", ResponseCode.SUBSCRIBER_DELETE_SUCCESS);
+                    result.put("responseCode", ResponseCode.SUBSCRIBER_DELETE_SUCCESS.ordinal());
+                } else {
+                    return Mono.error(new GeneralException(ResponseCode.SUBSCRIBER_DELETE_FAILED));
+                }
+
+                return Mono.just(result);
+            } else {
+                return Mono.error(new SubscriberNotFoundException(ResponseCode.SUBSCRIBER_NOT_FOUND));
+            }
+        } catch (Exception e) {
+            return Mono.error(new GeneralException(ResponseCode.SUBSCRIBER_DELETE_FAILED));
+        }
+    }
+
 
     @Override
     public Mono<Map<String, Object>> updateSubscriberParameters(int subscriberId, int planId, SubscriberDto subscriber) {

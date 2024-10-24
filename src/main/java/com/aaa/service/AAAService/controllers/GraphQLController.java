@@ -41,6 +41,16 @@ public class GraphQLController {
         return planService.getPlans();
     }
 
+
+    @QueryMapping(name = "getPlansByPage")
+    public Mono<PaginationDto> getPlansByPage(@Argument int page, @Argument int size) {
+        return planService.getPlansByPage(page, size);
+    }
+    @QueryMapping(name = "getPlansById")
+    public Mono<PlanDto> getPlansById(@Argument int planId) {
+        return planService.getPlansById(planId);
+    }
+
     @QueryMapping(name = "getPlanAttribute")
     public Flux<PlanAttributeDto> getPlanAttribute(@Argument int subscriberId, @Argument int planId) {
         return planService.getPlanAttributes(subscriberId, planId);
@@ -65,6 +75,29 @@ public class GraphQLController {
     public Mono<Map<String, Object>> updateSubscriber(@Argument int subscriberId, @Argument SubscriberDto subscriber) {
         return subscriberService.updateSubscriber(subscriberId, subscriber);
     }
+
+    @MutationMapping(name = "deleteSubscriber")
+    public Mono<Map<String, Object>> deleteSubscriber(@Argument int subscriberId) {
+        return subscriberService.deleteSubscriber(subscriberId);
+    }
+
+
+
+    @MutationMapping(name = "createPlan")
+    public Mono<Map<String, Object>> createPlan(@Argument PlanDto plan) {
+        return planService.createPlan(plan);
+    }
+
+    @MutationMapping(name = "updatePlan")
+    public Mono<Map<String, Object>> updatePlan(@Argument int planId, @Argument PlanDto plan) {
+        return planService.updatePlan(planId, plan);
+    }
+
+    @MutationMapping(name = "deletePlan")
+    public Mono<Map<String, Object>> deletePlan(@Argument int planId) {
+        return planService.deletePlan(planId);
+    }
+
 
     @MutationMapping(name = "applyPlan")
     public Mono<Map<String, Object>> applyPlan(@Argument int subscriberId, @Argument int planId, @Argument String state) {

@@ -21,7 +21,18 @@ public enum ResponseCode {
     UPDATE_PARAMETERS("Update subscriber parameters success"),
     ATTRIBUTE_META_FETCH_FAILED("Attribute fetch failed"),
     PARAMETER_META_FETCH_FAILED("Parameter fetch failed"),
-    PROFILE_META_FETCH_FAILED("Profile fetch failed");
+    PROFILE_META_FETCH_FAILED("Profile fetch failed"),
+    SUBSCRIBER_DELETE_SUCCESS("Subscriber Deleted Successfully"),
+    SUBSCRIBER_DELETE_FAILED("Subscriber Delete Failed"),
+    SUBSCRIBER_NOT_FOUND("Subscriber Not Found"),
+    PLAN_NOT_FOUND("Plan Not Found"),
+    PLAN_CREATE_SUCCESS("Plan create success"),
+    PLAN_UPDATE_SUCCESS("Plan update success"),
+    PLAN_UPDATE_FAILED("Plan update failed"),
+    PLAN_CREATE_FAILED("Plan create failed"),
+    PLAN_DELETE_SUCCESS("Plan Deleted Successfully"),
+    PLAN_DELETE_FAILED("Plan Delete Failed"),
+    PLAN_ALREADY_EXISTS("This Plan Already Exists");
     private String message;
 
     public void setMessage(String message) {

@@ -50,6 +50,53 @@ public class CustomValidator {
         return false;
     }
 
+
+
+    public final boolean checkPlan(String planName) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            String query = "SELECT COUNT(*) FROM bb_plan WHERE plan_name = :planName";
+            Map<String, Object> params = new HashMap<>();
+            params.put("planName", planName);
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+
+    public final boolean deleteSubscriber(int subscriberId) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            String query = "SELECT COUNT(*) FROM bb_subscriber WHERE subscriber_id = :subscriberId";
+            Map<String, Object> params = new HashMap<>();
+            params.put("subscriberId", subscriberId);
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public final boolean deletePlan(int planId) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            String query = "SELECT COUNT(*) FROM bb_plan WHERE plan_id = :planId"; // Ensure the table name is correct
+            Map<String, Object> params = new HashMap<>();
+            params.put("planId", planId);
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count > 0; // Return true if the plan exists
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception for debugging
+        }
+        return false; // Return false if there was an error or the plan does not exist
+    }
+
     //Check existing NAS
     public boolean checkNasPattern(String subscriberId, String pattern) {
         try {
