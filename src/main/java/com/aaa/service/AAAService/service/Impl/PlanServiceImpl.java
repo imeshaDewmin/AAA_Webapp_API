@@ -52,18 +52,18 @@ public class PlanServiceImpl implements PlanService {
     public Mono<PaginationDto> getPlansByPage(int page, int size) {
         try {
             namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+
             String query = "SELECT \n" +
-                    "    p.plan_Id,\n" +
+                    "    p.plan_id,\n" +
                     "    p.type_id,\n" +
                     "    p.plan_name,\n" +
-                    "    p.description,\n" +
+                    "    p.description\n" +
                     "FROM \n" +
-                    "    bb_plan s\n" +
-                    "INNER JOIN \n" +
-                    "    bb_plan_type sp ON p.type_id = pt.type_id\n" +
+                    "    bb_plan p\n" +
                     "LIMIT :size OFFSET :offset;";
-            ;
+
             String countQuery = "SELECT COUNT(*) FROM bb_plan";
+
             int offset = (page - 1) * size;
             Map<String, Object> params = new HashMap<>();
             params.put("size", size);
@@ -89,6 +89,7 @@ public class PlanServiceImpl implements PlanService {
             return Mono.error(new GeneralException(ResponseCode.ERROR));
         }
     }
+
 
     @Override
     public Mono<PlanDto> getPlansById(int planId) {
