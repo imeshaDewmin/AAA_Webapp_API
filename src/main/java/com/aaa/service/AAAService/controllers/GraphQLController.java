@@ -158,4 +158,37 @@ public class GraphQLController {
     public Flux<ProfileOverrideMetaDto> getProfileMeta() {
         return appService.getProfiles();
     }
+
+    @QueryMapping(name = "getProfilesByPage")
+    public Mono<PaginationDto> getProfilesByPage(@Argument int page, @Argument int size) {
+        return profileService.getProfilesByPage(page, size);
+    }
+
+    @QueryMapping(name = "getProfilesById")
+    public Mono<ProfileDto> getProfilesById(@Argument int profileId) {
+        return profileService.getProfilesById(profileId);
+    }
+
+    @MutationMapping(name = "createProfile")
+    public Mono<Map<String, Object>> createProfile(@Argument ProfileDto profile) {
+        return profileService.createProfile(profile);
+    }
+
+    @MutationMapping(name = "updateProfile")
+    public Mono<Map<String, Object>> updateProfile(@Argument int profileId, @Argument ProfileDto profile) {
+        return profileService.updateProfile(profileId, profile);
+    }
+
+    @MutationMapping(name = "deleteProfile")
+    public Mono<Map<String, Object>> deleteProfile(@Argument int profileId) {
+        return profileService.deleteProfile(profileId);
+    }
+
+    @QueryMapping(name = "getProfiles")
+    public Flux<ProfileDto> getProfiles() {
+        return profileService.getProfiles();
+    }
+
+
+
 }

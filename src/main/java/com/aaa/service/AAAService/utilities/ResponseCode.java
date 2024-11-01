@@ -32,7 +32,16 @@ public enum ResponseCode {
     PLAN_CREATE_FAILED("Plan create failed"),
     PLAN_DELETE_SUCCESS("Plan Deleted Successfully"),
     PLAN_DELETE_FAILED("Plan Delete Failed"),
-    PLAN_ALREADY_EXISTS("This Plan Already Exists");
+    PLAN_ALREADY_EXISTS("This Plan Already Exists"),
+    PROFILE_NOT_FOUND("profile Not Found"),
+    PROFILE_CREATE_SUCCESS("Plan create success"),
+    PROFILE_UPDATE_SUCCESS("Plan update success"),
+    PROFILE_UPDATE_FAILED("Plan update failed"),
+    PROFILE_CREATE_FAILED("Plan create failed"),
+    PROFILE_DELETE_SUCCESS("Plan Deleted Successfully"),
+    PROFILE_DELETE_FAILED("Plan Delete Failed"),
+    PROFILE_FETCH_FAILED("Plan fetch failed"),
+    PROFILE_ALREADY_EXISTS("This Plan Already Exists");
     private String message;
 
     public void setMessage(String message) {

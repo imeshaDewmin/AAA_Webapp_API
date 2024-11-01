@@ -67,6 +67,34 @@ public class CustomValidator {
     }
 
 
+    public final boolean checkProfile(Integer attributeGroup) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            String query = "SELECT COUNT(*) FROM bb_profile WHERE attribute_group = :attributeGroup";
+            Map<String, Object> params = new HashMap<>();
+            params.put("attributeGroup", attributeGroup);
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public final boolean deleteProfile(int profileId) {
+        try {
+            namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+            String query = "SELECT COUNT(*) FROM bb_profile WHERE profile_id = :profileId";
+            Map<String, Object> params = new HashMap<>();
+            params.put("profileId", profileId);
+            Integer count = namedParameterJdbcTemplate.queryForObject(query, params, Integer.class);
+            return count != null && count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
     public final boolean deleteSubscriber(int subscriberId) {

@@ -20,7 +20,9 @@ type Query{
     getParameterMeta:[ParameterMetaOut]
     getProfileMeta:[ProfileMetaOut]
     getSubscriberParameter(subscriberId: Int):[SubscriberParameterOut]
-
+    getProfiles:Object
+    getProfilesByPage(page: Int!, size:Int!): PaginationProfileOut
+    getProfilesById(profileId: Int):ProfileOut
 }
 
 type Mutation {
@@ -32,6 +34,9 @@ type Mutation {
     createPlan(plan: PlanInput!): Object
     updatePlan(planId: Int!, plan: PlanInput!): Object
     deletePlan(planId: Int!): Object
+    createProfile(profile: ProfileInput!): Object
+    updateProfile(profileId: Int!, profile: ProfileInput!): Object
+    deleteProfile(profileId: Int!): Object
 }
 
 type ProfileMetaOut{
@@ -86,6 +91,13 @@ type PlanOut{
     planId: Int
     typeId: Int
     planName: String
+    description: String
+}
+
+type ProfileOut{
+    profileId: Int
+    attributeGroup: Int
+    profileKey: String
     description: String
 }
 
@@ -179,6 +191,15 @@ type PaginationPlanOut{
     totalElements: Int
 }
 
+
+type PaginationProfileOut{
+    content: [ProfileOut]
+    page: Int
+    size: Int
+    totalElements: Int
+}
+
+
 type SubscriberOut {
     subscriberId: Int!
     planId:Int
@@ -217,6 +238,12 @@ input SubscriberInput {
 input PlanInput {
     typeId: Int
     planName: String
+    description: String
+}
+
+input ProfileInput {
+    attributeGroup: Int
+    profileKey: String
     description: String
 }
 
